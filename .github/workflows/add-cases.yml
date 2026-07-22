@@ -1,0 +1,21 @@
+name: Add eCourts Cases Daily
+
+on:
+  schedule:
+    - cron: '30 1 * * *'
+  workflow_dispatch
+
+jobs:
+  add-cases:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add cases from CSV
+        run: |
+          tail -n +2 .github/cases.csv | while IFS=',' read -r caseNumber caseName; do
+            echo "Adding case: $caseNumber"
+            curl -X POST https://ecourts-whatsapp-automation.onrender.com/api/cases \
+              -H "Content-Type: application/json" \
+              -d "{\"caseNumber\": \"$caseNumber\"}"
+            sleep 2
+          done
