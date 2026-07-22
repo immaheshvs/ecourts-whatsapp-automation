@@ -3,7 +3,7 @@ name: Add eCourts Cases Daily
 on:
   schedule:
     - cron: '30 1 * * *'
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   add-cases:
